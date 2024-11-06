@@ -3,6 +3,7 @@ project(top-100 VERSION 0.1.0 LANGUAGES C CXX)
 
 add_executable(top-100 main.cpp)
 add_executable(playground playground/main.cpp)
+add_executable(BinarySearchTree 14/BinarySearchTree/main.cpp 14/BinarySearchTree/BinarySearchTree.cpp) 
 
 include(CTest)
 enable_testing()
