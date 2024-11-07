@@ -2,102 +2,172 @@
 #include "BinarySearchTree.h"
 #include <limits>
 #include <cmath>
+#include <stdexcept>
 
-BinaryTreeNode::BinaryTreeNode(int value) : left(nullptr), right(nullptr), val(value) {}
+/** ----------------------------
+ * Node inner class helper
+ * ----------------------------- */
 
-BinaryTreeNode::~BinaryTreeNode()
+BinarySearchTree::Node::Node(int value) : value{value}, left{nullptr}, right{nullptr} {}
+
+BinarySearchTree::Node::~Node()
 {
-    delete right;
     delete left;
+    delete right;
 }
 
-BinarySearchTree::BinarySearchTree() : root(nullptr), nodes_count(0) {}
+/** ----------------------------
+ * tree implementation
+ * ----------------------------- */
+
+BinarySearchTree::BinarySearchTree() : root{nullptr}, nodes_count{0} {}
 
 BinarySearchTree::~BinarySearchTree() { delete root; }
 
 void BinarySearchTree::insert(int value)
 {
-    auto node{root};
-
-    while (node != nullptr)
+    if (root == nullptr)
     {
-        node = (node->val > value) ? node->right : node->left;
+        root = new BinarySearchTree::Node{value};
     }
+    else
+    {
+        auto node{root};
+        BinarySearchTree::Node *parent{nullptr};
 
-    node = new BinaryTreeNode{value};
+        while (node != nullptr)
+        {
+            parent = node;
+            node = node->value > value ? node->left : node->right;
+        }
+
+        if (parent->value > value)
+        {
+            parent->left = new BinarySearchTree::Node{value};
+        }
+        else
+        {
+            parent->right = new BinarySearchTree::Node{value};
+        }
+    }
     nodes_count++;
 }
-
-void BinarySearchTree::remove(int value) {}
 
 bool BinarySearchTree::contains(int value)
 {
     auto node{root};
-
     while (node != nullptr)
     {
-        if (node->val == value)
+        if (node->value == value)
         {
             return true;
         }
-
-        node = (node->val > value) ? node->left : node->right;
+        node = node->value > value ? node->left : node->right;
     }
-
     return false;
 }
 
-int BinarySearchTree::max()
+void BinarySearchTree::remove(int value)
 {
-    auto node{root};
-    auto max_value{std::numeric_limits<int>::quiet_NaN()};
+    Node *node = root;
+    Node *parent = nullptr;
 
-    while (node != nullptr)
+    while (node != nullptr && node->value != value)
     {
-        if (node->right != nullptr)
-        {
-            node = node->right;
-        }
-        else if (node->left != nullptr)
+        parent = node;
+        if (value < node->value)
         {
             node = node->left;
         }
         else
         {
-            max_value = node->val;
-            break;
+            node = node->right;
         }
     }
 
-    return max_value;
-}
-
-int BinarySearchTree::min()
-{
-    auto node{root};
-    auto min_value{std::numeric_limits<int>::quiet_NaN()};
-
-    while (node != nullptr)
+    if (node == nullptr)
     {
-        if (node->left != nullptr)
+        return; // Value not found
+    }
+
+    if (node->left == nullptr || node->right == nullptr)
+    {
+        Node *new_child = node->left ? node->left : node->right;
+
+        if (parent == nullptr)
         {
-            node = node->left;
+            root = new_child;
         }
-        else if (node->right != nullptr)
+        else if (parent->left == node)
         {
-            node = node->right;
+            parent->left = new_child;
         }
         else
         {
-            min_value = node->val;
-            break;
+            parent->right = new_child;
         }
+
+        delete node;
+    }
+    else
+    {
+        Node *successor_parent = node;
+        Node *successor = node->right;
+
+        while (successor->left != nullptr)
+        {
+            successor_parent = successor;
+            successor = successor->left;
+        }
+
+        node->value = successor->value;
+
+        if (successor_parent->left == successor)
+        {
+            successor_parent->left = successor->right;
+        }
+        else
+        {
+            successor_parent->right = successor->right;
+        }
+
+        delete successor;
     }
 
-    return min_value;
+    nodes_count--;
 }
 
-int BinarySearchTree::size()
+int BinarySearchTree::max() const
+{
+    if (root == nullptr)
+    {
+        throw std::runtime_error("Tree is empty");
+    }
+
+    Node *node = root;
+    while (node->right != nullptr)
+    {
+        node = node->right;
+    }
+    return node->value;
+}
+
+int BinarySearchTree::min() const
+{
+    if (root == nullptr)
+    {
+        throw std::runtime_error("Tree is empty");
+    }
+
+    Node *node = root;
+    while (node->left != nullptr)
+    {
+        node = node->left;
+    }
+    return node->value;
+}
+
+int BinarySearchTree::size() const
 {
     return nodes_count;
 }

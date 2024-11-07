@@ -17,7 +17,7 @@ int main()
     std::cout << "Contains 15: " << bst.contains(15) << " (should return 1)" << std::endl;
     std::cout << "Contains 20: " << bst.contains(20) << " (should return 0)" << std::endl;
 
-    // Test remove
+    // // Test remove
     bst.remove(10);
     std::cout << "Removed 10" << std::endl;
     std::cout << "Contains 10: " << bst.contains(10) << " (should return 0)" << std::endl;
