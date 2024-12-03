@@ -14,36 +14,16 @@ Your task is to determine whether the string is valid. A string is considered va
 #include <iomanip>
 
 bool is_valid_parentheses(const std::string &);
-void test_is_valid_parentheses(const std::string &, bool);
 
 int main(int argc, char const *argv[])
 {
-    test_is_valid_parentheses("()", true);
-    test_is_valid_parentheses("()[]{}", true);
-    test_is_valid_parentheses("(]", false);
-    test_is_valid_parentheses("([)]", false);
-    test_is_valid_parentheses("{[]}", true);
-    test_is_valid_parentheses("<({[]})>", true);
-    test_is_valid_parentheses("<({[})]>", false);
-    test_is_valid_parentheses("", true);
-    test_is_valid_parentheses("(", false);
-    test_is_valid_parentheses(")", false);
-    test_is_valid_parentheses("({[<]})", false);
-    test_is_valid_parentheses("a(bc", false);
-    test_is_valid_parentheses("a{b}c", true);
-    test_is_valid_parentheses("a[b]c", true);
-    test_is_valid_parentheses("a<b>c", true);
+    std::string input;
+
+    std::cin >> input;
+
+    std::cout << (is_valid_parentheses(input) ? "legal" : "illegal");
+
     return 0;
-}
-
-void test_is_valid_parentheses(const std::string &input, bool expected)
-{
-    int width{8};
-
-    std::cout << "input: " << std::setw(width) << input
-              << ", result: " << std::setw(width) << (is_valid_parentheses(input) ? "valid" : "invalid")
-              << ", should be: " << std::setw(width) << (expected ? "valid" : "invalid")
-              << std::endl;
 }
 
 bool is_valid_parentheses(const std::string &str)
