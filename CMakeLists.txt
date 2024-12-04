@@ -5,7 +5,7 @@ add_executable(top-100 main.cpp)
 add_executable(playground playground/main.cpp)
 add_executable(BinarySearchTree 14/BinarySearchTree/main.cpp 14/BinarySearchTree/BinarySearchTree.cpp) 
 add_executable(graph 15/graph/main.cpp 15/graph/Graph.cpp)
-add_executable(zoom-exercise-23 23/zoom-exercise.cpp)
+add_executable(zoom_exercise_23_1 23/zoom-exercise-1.cpp)
 
 include(CTest)
 enable_testing()
