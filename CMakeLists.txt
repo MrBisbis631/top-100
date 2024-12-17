@@ -6,6 +6,7 @@ add_executable(playground playground/main.cpp)
 add_executable(BinarySearchTree 14/BinarySearchTree/main.cpp 14/BinarySearchTree/BinarySearchTree.cpp) 
 add_executable(graph 15/graph/main.cpp 15/graph/Graph.cpp)
 add_executable(zoom_exercise_23_1 23/zoom-exercise-1.cpp)
+add_executable(tic_tac_toe cpp-exam-tic-tac-toe/main.cpp cpp-exam-tic-tac-toe/game-exceptions.cpp cpp-exam-tic-tac-toe/Game.cpp)
 
 include(CTest)
 enable_testing()
